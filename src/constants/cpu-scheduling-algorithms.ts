@@ -44,6 +44,66 @@ export const CPU_SCHEDULING_ALGORITHMS = [
     name: "Shortest Job First",
     description: "The process with the shortest burst time is served first.",
     header: ["Process ID", "Arrival Time", "Burst Time"],
+    calculate: (processes: Process[]) => {
+      // Deep copy processes to avoid modifying the original array
+      const remainingProcesses = [...processes].sort((a, b) => a.arrivalTime - b.arrivalTime);
+    
+      let currentTime = 0;
+      let totalTurnaroundTime = 0;
+      let totalWaitingTime = 0;
+    
+      const completedProcesses: Process[] = [];
+    
+      while (remainingProcesses.length > 0) {
+        // Get processes that have arrived by the current time
+        const readyQueue = remainingProcesses.filter(
+          (process) => process.arrivalTime <= currentTime
+        );
+    
+        if (readyQueue.length === 0) {
+          // If no process is ready, fast forward time to the next process arrival
+          currentTime = remainingProcesses[0].arrivalTime;
+          continue;
+        }
+    
+        // Sort the ready queue by burst time
+        readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+    
+        // Pick the shortest job from the ready queue
+        const currentProcess = readyQueue[0];
+    
+        // Remove the selected process from the remaining processes list
+        const indexToRemove = remainingProcesses.indexOf(currentProcess);
+        remainingProcesses.splice(indexToRemove, 1);
+    
+        // Calculate metrics for the current process
+        if (currentTime < currentProcess.arrivalTime) {
+          currentTime = currentProcess.arrivalTime;
+        }
+    
+        currentProcess.completionTime = currentTime + currentProcess.burstTime;
+        currentProcess.turnaroundTime = currentProcess.completionTime - currentProcess.arrivalTime;
+        currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burstTime;
+    
+        totalTurnaroundTime += currentProcess.turnaroundTime;
+        totalWaitingTime += currentProcess.waitingTime;
+    
+        // Update current time to the completion time of the current process
+        currentTime = currentProcess.completionTime;
+    
+        // Add the completed process to the results
+        completedProcesses.push(currentProcess);
+      }
+    
+      const averageTurnaroundTime = totalTurnaroundTime / completedProcesses.length;
+      const averageWaitingTime = totalWaitingTime / completedProcesses.length;
+    
+      return {
+        processes: completedProcesses,
+        averageTurnaroundTime,
+        averageWaitingTime,
+      };
+    },    
   },
   {
     name: "Round Robin",
