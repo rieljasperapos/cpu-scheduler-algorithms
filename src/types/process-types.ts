@@ -19,4 +19,5 @@ export type ProcessResult = {
   processes: Process[];
   averageTurnaroundTime: number;
   averageWaitingTime: number;
+  ganttChart: { processId: number; startTime: number; endTime: number }[]; // Add this property
 };
