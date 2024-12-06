@@ -132,7 +132,7 @@ export const CPU_SCHEDULING_ALGORITHMS = [
         ganttChart, // Include Gantt chart data
       };
     },
-    
+
   },
   {
     name: "Round Robin",
