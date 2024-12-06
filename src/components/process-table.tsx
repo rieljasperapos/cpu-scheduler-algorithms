@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table';
 import useProcessStore from '@/stores/process-store';
 import { Input } from './ui/input';
+import { Label } from "./ui/label";
 import { Button } from './ui/button';
 import AddProcesses from './add-processes';
 
@@ -19,6 +20,8 @@ const ProcessTable = () => {
   const updateProcess = useProcessStore((state) => state.updateProcess);
   const calculate = useProcessStore((state) => state.calculate);
   const selectedAlgorithm = useProcessStore((state) => state.selectedAlgorithm);
+  const requiresTimeQuantum = selectedAlgorithm.requiresTimeQuantum;
+
   return (
     <div className='flex flex-col gap-6'>
       <div className="flex items-center justify-between gap-8">
@@ -26,6 +29,16 @@ const ProcessTable = () => {
           {isEditing ? "Done" : "Edit Process"}
         </Button>
         <AddProcesses />
+        {requiresTimeQuantum && (
+          <div className="flex items-center gap-4">
+            <Label>Time Quanta</Label>
+            <Input
+              type="number"
+              defaultValue={useProcessStore.getState().timeQuantum}
+              onChange={(e) => useProcessStore.getState().setTimeQuantum(Number(e.target.value))}
+            />
+          </div>
+        )}
       </div>
       <Table>
         <TableCaption>CPU Scheduling Algorithms</TableCaption>

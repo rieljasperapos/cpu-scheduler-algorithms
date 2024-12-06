@@ -1,6 +1,7 @@
 export interface Process {
   processId: number;
   arrivalTime: number;
+  priority: number;
   burstTime: number;
   completionTime?: number;
   waitingTime?: number;
