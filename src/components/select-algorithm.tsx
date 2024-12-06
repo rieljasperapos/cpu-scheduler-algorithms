@@ -75,8 +75,6 @@ const SelectAlgorithm = () => {
               usePageReplacementStore.getState().setAlgorithm;
             setSelectedPageReplacementAlgorithm(value);
           }
-
-          console.log(value);
         }}
       >
         <SelectTrigger className="w-[200px]">

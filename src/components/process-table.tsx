@@ -19,7 +19,6 @@ const ProcessTable = () => {
   const updateProcess = useProcessStore((state) => state.updateProcess);
   const calculate = useProcessStore((state) => state.calculate);
   const selectedAlgorithm = useProcessStore((state) => state.selectedAlgorithm);
-  console.log(selectedAlgorithm);
   return (
     <div className='flex flex-col gap-6'>
       <div className="flex items-center justify-between gap-8">

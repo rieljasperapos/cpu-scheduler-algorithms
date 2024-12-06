@@ -80,7 +80,6 @@ const useProcessStore = create<ProcessState>((set, get) => ({
       set({ results, showGanttChart: true });
     } else {
       const results = calculationLogic(processes);
-      console.log(results);
       set({ results, showGanttChart: true });
     }
   },

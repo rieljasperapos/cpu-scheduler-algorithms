@@ -21,7 +21,6 @@ const AddProcessDialog = () => {
 
   const handleNumberOfProcessesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNumberOfProcesses(Number(event.target.value));
-    console.log(numberOfProcesses);
   }
 
   const handleProcessChange = (index: number, field: "arrivalTime" | "burstTime", value: string) => {
@@ -97,7 +96,7 @@ const AddProcessDialog = () => {
             ""
           ) : (
             <DialogClose asChild>
-              <Button onClick={() => console.log(processes)}>Submit</Button>
+              <Button>Submit</Button>
             </DialogClose>
           )}
         </div>

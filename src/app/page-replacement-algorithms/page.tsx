@@ -28,10 +28,6 @@ const FifoPageReplacement: React.FC = () => {
 
   const hasResults = !isNaN(referenceString[0]) && frames.length > 0;
 
-  console.log(frames)
-  console.log(referenceString);
-  console.log(frameSize);
-
   return (
     <div className="mx-auto p-8 space-y-8">
       <h1 className="text-3xl font-bold text-center">{algorithm} Page Replacement Algorithm</h1>
