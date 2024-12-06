@@ -11,9 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useProcessStore from "@/stores/process-store";
 import { Process } from "@/types/process-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const AddProcessDialog = () => {
   const [numberOfProcesses, setNumberOfProcesses] = useState(0);
