@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ProcessResult, Process, Algorithms } from "@/types/process-types";
+import { Process, ProcessResult, Algorithms } from "@/types/process-types";
 import { CPU_SCHEDULING_ALGORITHMS } from "@/constants/cpu-scheduling-algorithms";
 
 interface ProcessState {
@@ -10,15 +10,15 @@ interface ProcessState {
   results: ProcessResult | null;
   showGanttChart: boolean;
   selectedAlgorithm: Algorithms;
-  timeQuantum: number | null,
-  setTimeQuantum: (value: number) => void,
+  timeQuantum: number;
+  setTimeQuantum: (value: number) => void;
   setSelectedAlgorithm: (algorithm: string) => void;
   setNumberOfProcesses: (count: string) => void;
   updateProcess: (index: number, field: "arrivalTime" | "burstTime", value: string) => void;
   toggleEditProcess: () => void;
   calculate: () => void;
   resetResults: () => void;
-};
+}
 
 const useProcessStore = create<ProcessState>((set, get) => ({
   numberOfProcesses: "0",
@@ -28,7 +28,7 @@ const useProcessStore = create<ProcessState>((set, get) => ({
   results: null,
   showGanttChart: false,
   selectedAlgorithm: CPU_SCHEDULING_ALGORITHMS[0],
-  timeQuantum: null,
+  timeQuantum: 0,
   setTimeQuantum: (value) => set(() => ({ timeQuantum: value })),
   setSelectedAlgorithm: (algorithmName) =>
     set((state) => ({
@@ -59,6 +59,10 @@ const useProcessStore = create<ProcessState>((set, get) => ({
     })),
   calculate: () => {
     const { processes, selectedAlgorithm, timeQuantum } = get();
+    console.log("Processes:", processes);
+    console.log("Selected Algorithm:", selectedAlgorithm);
+    console.log("Time Quantum:", timeQuantum);
+
     if (processes.length === 0) {
       console.warn("No processes available for calculation.");
       return;
@@ -72,14 +76,16 @@ const useProcessStore = create<ProcessState>((set, get) => ({
     }
 
     if (selectedAlgorithm.name === "Round Robin") {
-      if (!timeQuantum) {
+      if (timeQuantum == 0) {
         console.error("Time Quantum is required for Round Robin.");
         return;
       }
       const results = calculationLogic(processes, timeQuantum);
+      console.log("Results:", results);
       set({ results, showGanttChart: true });
     } else {
       const results = calculationLogic(processes);
+      console.log("Results:", results);
       set({ results, showGanttChart: true });
     }
   },
