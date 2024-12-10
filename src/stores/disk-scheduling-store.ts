@@ -61,7 +61,7 @@ const useDiskStore = create<DiskState>((set, get) => ({
 
   // Calculate based on selected algorithm
   calculate: () => {
-    const { algorithm, requests, currentPosition, trackSize, seekRate, alpha } = get();
+    const { algorithm, requests, currentPosition, trackSize, seekRate } = get();
 
     let result: CalculationResult;
     if (algorithm === "FCFS") {

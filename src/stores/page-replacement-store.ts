@@ -148,7 +148,7 @@ const processOptimal = (
   hits: number,
   faults: number
 ) => {
-  const frameSize = frames.length;
+  // const frameSize = frames.length;
   let futureUses: number[];
 
   referenceString.forEach((page, step) => {

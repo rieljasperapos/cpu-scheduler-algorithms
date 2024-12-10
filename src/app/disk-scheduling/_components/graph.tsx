@@ -1,7 +1,7 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, YAxis, XAxis, LabelList, LabelProps } from "recharts";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/card";
+import { CartesianGrid, Line, LineChart, YAxis, XAxis, LabelList } from "recharts";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/chart";
 import useDiskStore from "@/stores/disk-scheduling-store";
 
@@ -13,7 +13,7 @@ const Graph = () => {
   // Create data points where each head movement is represented by a single point (just the final position)
   // Filter out consecutive duplicate movements
   const chartData = headMovements.reduce<{ label: number; movement: number }[]>((acc, movement, index) => {
-    const [from, to] = movement.step.split('->').map((s) => parseInt(s.trim(), 10));
+    const [to] = movement.step.split('->').map((s) => parseInt(s.trim(), 10));
 
     // If it's the first movement, add the initial position (256) as the first data point
     if (index === 0) {
@@ -27,7 +27,7 @@ const Graph = () => {
 
     return acc;
   }, []);
-  
+
   // Chart configuration
   const chartConfig = {
     desktop: {
