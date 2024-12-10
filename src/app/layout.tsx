@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SelectAlgorithm from "@/components/select-algorithm";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,12 +26,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-center items-center gap-4 p-4`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <SelectAlgorithm />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+        {/* Menu Section */}
+        <header className="w-full p-4 border-b">
+          <SelectAlgorithm />
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col justify-center items-center gap-4 p-4">
+          {children}
+        </main>
+
+        {/* Footer */}
+        <footer className="w-full p-4 border-t text-center text-sm text-gray-700">
+          Made by Apos, Clarit, and Co.
+        </footer>
+        </ThemeProvider>
       </body>
     </html>
   );

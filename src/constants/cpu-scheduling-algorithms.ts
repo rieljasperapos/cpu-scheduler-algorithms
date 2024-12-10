@@ -141,11 +141,7 @@ export const CPU_SCHEDULING_ALGORITHMS = [
     description: "Each process is served in turns with a fixed time quantum.",
     header: ["Process ID", "Arrival Time", "Burst Time"],
     requiresTimeQuantum: true,
-    calculate: (processes: Process[], timeQuantum: number): ProcessResult => {
-      console.log("Starting Round Robin calculation");
-      console.log("Initial processes:", processes);
-      console.log("Time Quantum:", timeQuantum);
-  
+    calculate: (processes: Process[], timeQuantum?: number): ProcessResult => {
       // Map to track remaining burst times
       const remainingTimes: { [processId: number]: number } = {};
       processes.forEach((process) => {
@@ -196,7 +192,7 @@ export const CPU_SCHEDULING_ALGORITHMS = [
         // Execute the process for time quantum or remaining time
         const executionTime = Math.min(
           remainingTimes[currentProcess.processId],
-          timeQuantum
+          timeQuantum as number
         );
         remainingTimes[currentProcess.processId] -= executionTime;
         currentTime += executionTime;
@@ -346,15 +342,15 @@ export const CPU_SCHEDULING_ALGORITHMS = [
   {
     name: "Priority Scheduling (Non-Preemptive)",
     description: "Processes are scheduled based on static priority levels.",
-    header: ["Process ID", "Arrival Time", "Burst Time"],
+    header: ["Process ID", "Arrival Time", "Burst Time", "Priority"],
     requiresTimeQuantum: false,
     calculate: (processes: Process[]): ProcessResult => {
       console.log("Starting Priority Scheduling calculation");
       console.log("Initial processes:", processes);
   
-      // Assign priority based on processId
+      // Assign priority based on inputted priority
       processes.forEach((process) => {
-        process.priority = process.processId; // Priority equals processId
+        process.priority = process.priority;
       });
   
       // Sort processes by arrival time
@@ -381,7 +377,12 @@ export const CPU_SCHEDULING_ALGORITHMS = [
         }
   
         // Sort the ready queue by priority (lower number means higher priority)
-        readyQueue.sort((a, b) => a.priority - b.priority);
+        // readyQueue.sort((a, b) => a.priority - b.priority);
+        readyQueue.sort((a, b) => {
+          const priorityA = a.priority ?? Infinity; // Default to Infinity if undefined
+          const priorityB = b.priority ?? Infinity; // Default to Infinity if undefined
+          return priorityA - priorityB;
+        });
   
         // Select the process with highest priority
         const currentProcess = readyQueue[0];
@@ -435,16 +436,16 @@ export const CPU_SCHEDULING_ALGORITHMS = [
     name: "Priority Scheduling (Preemptive)",
     description:
       "Processes are scheduled based on dynamic priority levels, preempting if a higher priority process arrives.",
-    header: ["Process ID", "Arrival Time", "Burst Time"],
+    header: ["Process ID", "Arrival Time", "Burst Time", "Priority"],
     requiresTimeQuantum: false,
     calculate: (processes: Process[]): ProcessResult => {
       console.log("Starting Preemptive Priority Scheduling calculation");
       console.log("Initial processes:", processes);
   
-      // Assign priorities based on processId (lower processId means higher priority)
+      // Assign priorities based on inputted priority
       const priorities: { [processId: number]: number } = {};
       processes.forEach((process) => {
-        priorities[process.processId] = process.processId; // Priority equals processId
+        priorities[process.processId] = process.priority as number; // Priority equals processId
       });
   
       // Deep copy processes and initialize remaining times
@@ -518,6 +519,7 @@ export const CPU_SCHEDULING_ALGORITHMS = [
           processId: process.processId,
           arrivalTime: process.arrivalTime,
           burstTime: process.burstTime,
+          priority: process.priority,
           completionTime: process.completionTime,
           turnaroundTime: process.turnaroundTime,
           waitingTime: process.waitingTime,

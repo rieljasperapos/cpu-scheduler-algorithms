@@ -5,6 +5,15 @@ import { usePageReplacementStore } from "@/stores/page-replacement-store";
 import InputForm from "./_components/input-form";
 import ResultTable from "./_components/results-table";
 import Statistics from "./_components/statistics";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const FifoPageReplacement: React.FC = () => {
   const {
@@ -17,7 +26,8 @@ const FifoPageReplacement: React.FC = () => {
     setReferenceString,
     setFrameSize,
     processReferenceString,
-    algorithm
+    algorithm,
+    setAlgorithm,
   } = usePageReplacementStore();
 
   const handleRun = (inputString: string, inputFrameSize: number) => {
@@ -30,6 +40,23 @@ const FifoPageReplacement: React.FC = () => {
 
   return (
     <div className="mx-auto p-8 space-y-8">
+      <Select
+        onValueChange={(value) => {
+          setAlgorithm(value);
+        }}
+      >
+        <SelectTrigger className="w-[200px]">
+          <SelectValue placeholder="Select an algorithm" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Page ReplacementAlgorithms</SelectLabel>
+            <SelectItem value="FIFO">FIFO</SelectItem>
+            <SelectItem value="LRU">LRU</SelectItem>
+            <SelectItem value="Optimal">Optimal Page Replacement</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <h1 className="text-3xl font-bold text-center">{algorithm} Page Replacement Algorithm</h1>
 
       {/* Input Form */}

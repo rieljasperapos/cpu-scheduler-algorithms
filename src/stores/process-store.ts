@@ -14,7 +14,7 @@ interface ProcessState {
   setTimeQuantum: (value: number) => void;
   setSelectedAlgorithm: (algorithm: string) => void;
   setNumberOfProcesses: (count: string) => void;
-  updateProcess: (index: number, field: "arrivalTime" | "burstTime", value: string) => void;
+  updateProcess: (index: number, field: "arrivalTime" | "burstTime" | "priority", value: string) => void;
   toggleEditProcess: () => void;
   calculate: () => void;
   resetResults: () => void;
@@ -43,6 +43,7 @@ const useProcessStore = create<ProcessState>((set, get) => ({
         processId: index + 1,
         arrivalTime: 0,
         burstTime: 0,
+        priority: 0,
       })),
       results: null,
     })),

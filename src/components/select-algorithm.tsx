@@ -1,16 +1,14 @@
 "use client";
+import * as React from "react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "./ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { CPU_SCHEDULING_ALGORITHMS } from "@/constants/cpu-scheduling-algorithms";
-import { usePageReplacementStore } from "@/stores/page-replacement-store";
-import useProcessStore from "@/stores/process-store";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/dropdown-menu";
 import {
   Sheet,
   SheetClose,
@@ -24,11 +22,13 @@ import { Menu, Cpu, Layers } from "lucide-react";
 import Link from "next/link";
 
 const SelectAlgorithm = () => {
+  const { setTheme } = useTheme();
+
   return (
-    <div className="flex gap-8">
+    <div className="flex gap-8 items-center justify-between">
       <Sheet>
-        <SheetTrigger>
-          <Menu />
+        <SheetTrigger asChild>
+          <Button>Menu</Button>
         </SheetTrigger>
         <SheetContent side="left">
           <SheetHeader className="mb-4">
@@ -40,7 +40,10 @@ const SelectAlgorithm = () => {
           <hr></hr>
           <div className="mt-4 flex flex-col gap-4">
             <SheetClose asChild>
-              <Link href="/" className="hover:text-orange-500 flex items-center gap-2">
+              <Link
+                href="/cpu-scheduling"
+                className="hover:text-orange-500 flex items-center gap-2"
+              >
                 <Cpu className="h-4" />
                 CPU Scheduling
               </Link>
@@ -54,48 +57,38 @@ const SelectAlgorithm = () => {
                 Page Replacement
               </Link>
             </SheetClose>
+            <SheetClose asChild>
+              <Link
+                href="/disk-scheduling"
+                className="hover:text-orange-500 flex items-center gap-2"
+              >
+                <Layers className="h-4" />
+                Disk Scheduling
+              </Link>
+            </SheetClose>
           </div>
         </SheetContent>
       </Sheet>
-      <Select
-        onValueChange={(value) => {
-          // Check if the selected algorithm is a CPU scheduling algorithm or a Page Replacement algorithm
-          if (
-            CPU_SCHEDULING_ALGORITHMS.some(
-              (algorithm) => algorithm.name === value
-            )
-          ) {
-            // Update the CPU Scheduling algorithm store
-            const setSelectedCpuAlgorithm =
-              useProcessStore.getState().setSelectedAlgorithm;
-            setSelectedCpuAlgorithm(value);
-          } else {
-            // Update the Page Replacement algorithm store
-            const setSelectedPageReplacementAlgorithm =
-              usePageReplacementStore.getState().setAlgorithm;
-            setSelectedPageReplacementAlgorithm(value);
-          }
-        }}
-      >
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Select an algorithm" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>CPU Scheduling Algorithms</SelectLabel>
-            {CPU_SCHEDULING_ALGORITHMS.map((algorithm, idx) => (
-              <SelectItem key={idx} value={algorithm.name}>
-                {algorithm.name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-          <SelectGroup>
-            <SelectLabel>Page Replacement Algorithms</SelectLabel>
-            <SelectItem value="FIFO">FIFO</SelectItem>
-            <SelectItem value="LRU">LRU</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon">
+            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => setTheme("light")}>
+            Light
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("dark")}>
+            Dark
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("system")}>
+            System
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

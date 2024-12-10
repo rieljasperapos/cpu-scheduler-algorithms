@@ -1,7 +1,7 @@
 export interface Process {
   processId: number;
   arrivalTime: number;
-  priority: number;
+  priority?: number;
   burstTime: number;
   completionTime?: number;
   waitingTime?: number;
@@ -12,8 +12,8 @@ export interface Algorithms {
   name: string;
   description: string;
   header: string[];
-  calculate?: (processes: Process[], timeQuantum?: number) => ProcessResult;
   requiresTimeQuantum?: boolean; // Optional field for Round Robin
+  calculate?: (processes: Process[], timeQuantum?: number) => ProcessResult;
 };
 
 export type ProcessResult = {

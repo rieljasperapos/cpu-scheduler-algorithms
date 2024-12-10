@@ -55,6 +55,8 @@ export const usePageReplacementStore = create<PageReplacementState>((set, get) =
       processFifo(referenceString, frames, hitFaultHistory, set, hits, faults);
     } else if (algorithm === "LRU") {
       processLru(referenceString, frames, hitFaultHistory, set, hits, faults);
+    } else if (algorithm === "Optimal") {
+      processOptimal(referenceString, frames, hitFaultHistory, set, hits, faults);
     }
   },
 }));
@@ -136,3 +138,57 @@ const processLru = (
 
   set({ frames, hits, faults, hitFaultHistory, errorMessage: null });
 };
+
+// Process Optimal Page Replacement
+const processOptimal = (
+  referenceString: number[],
+  frames: (number | null)[][],
+  hitFaultHistory: string[],
+  set: any,
+  hits: number,
+  faults: number
+) => {
+  const frameSize = frames.length;
+  let futureUses: number[];
+
+  referenceString.forEach((page, step) => {
+    // Current state of frames, with previous pages placed in them
+    const currentFrames = frames.map((frame) => frame[step - 1] ?? null);
+
+    // Check if the page is already in the frames (hit)
+    if (currentFrames.includes(page)) {
+      hits++;
+      hitFaultHistory.push("H");
+    } else {
+      // It's a page fault, so we need to load the page into one of the frames
+      faults++;
+      hitFaultHistory.push("F");
+
+      // Find an empty frame or replace a page based on the Optimal algorithm
+      if (currentFrames.includes(null)) {
+        // If there is an empty frame, place the page in the first available slot
+        const emptyIndex = currentFrames.indexOf(null);
+        currentFrames[emptyIndex] = page;
+      } else {
+        // If all frames are filled, find the page that will not be used for the longest period
+        futureUses = currentFrames.map((frame) => {
+          const futureIndex = referenceString.slice(step + 1).indexOf(frame!);
+          return futureIndex === -1 ? Number.MAX_SAFE_INTEGER : futureIndex;
+        });
+
+        // Find the index of the page that will not be used for the longest time in the future
+        const indexToReplace = futureUses.indexOf(Math.max(...futureUses));
+        currentFrames[indexToReplace] = page;
+      }
+    }
+
+    // Update frames with the current state after this page reference
+    frames.forEach((frame, index) => {
+      frame[step] = currentFrames[index] ?? null;
+    });
+  });
+
+  set({ frames, hits, faults, hitFaultHistory, errorMessage: null });
+};
+
+

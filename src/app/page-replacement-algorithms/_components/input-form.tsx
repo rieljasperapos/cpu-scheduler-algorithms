@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { usePageReplacementStore } from "@/stores/page-replacement-store";
 
 interface InputFormProps {
   onRun: (referenceString: string, frameSize: number) => void;
@@ -11,6 +12,7 @@ interface InputFormProps {
 const InputForm: React.FC<InputFormProps> = ({ onRun, defaultFrameSize }) => {
   const [inputString, setInputString] = useState("");
   const [inputFrameSize, setInputFrameSize] = useState(defaultFrameSize);
+  const { algorithm } = usePageReplacementStore();
 
   const handleRun = () => {
     onRun(inputString, inputFrameSize);
@@ -35,7 +37,7 @@ const InputForm: React.FC<InputFormProps> = ({ onRun, defaultFrameSize }) => {
         onChange={(e) => setInputFrameSize(Number(e.target.value))}
       />
       <Button onClick={handleRun}>
-        Run FIFO
+        Run {algorithm}
       </Button>
     </div>
   );

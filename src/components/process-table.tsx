@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Table,
   TableBody,
@@ -7,12 +7,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import useProcessStore from '@/stores/process-store';
-import { Input } from './ui/input';
+} from "@/components/ui/table";
+import useProcessStore from "@/stores/process-store";
+import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Button } from './ui/button';
-import AddProcesses from './add-processes';
+import { Button } from "./ui/button";
+import AddProcesses from "./add-processes";
 
 const ProcessTable = () => {
   const processes = useProcessStore((state) => state.processes);
@@ -23,7 +23,7 @@ const ProcessTable = () => {
   const requiresTimeQuantum = selectedAlgorithm.requiresTimeQuantum;
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className="flex flex-col gap-12">
       <div className="flex items-center justify-between gap-8">
         <Button onClick={useProcessStore.getState().toggleEditProcess}>
           {isEditing ? "Done" : "Edit Process"}
@@ -35,7 +35,11 @@ const ProcessTable = () => {
             <Input
               type="number"
               defaultValue={useProcessStore.getState().timeQuantum}
-              onChange={(e) => useProcessStore.getState().setTimeQuantum(Number(e.target.value))}
+              onChange={(e) =>
+                useProcessStore
+                  .getState()
+                  .setTimeQuantum(Number(e.target.value))
+              }
             />
           </div>
         )}
@@ -58,7 +62,9 @@ const ProcessTable = () => {
                   <Input
                     type="number"
                     defaultValue={process.arrivalTime}
-                    onChange={(e) => updateProcess(index, "arrivalTime", e.target.value)}
+                    onChange={(e) =>
+                      updateProcess(index, "arrivalTime", e.target.value)
+                    }
                   />
                 ) : (
                   <p>{process.arrivalTime}</p>
@@ -67,21 +73,41 @@ const ProcessTable = () => {
               <TableCell>
                 {isEditing ? (
                   <Input
-                    type='number'
+                    type="number"
                     defaultValue={process.burstTime}
-                    onChange={(e) => updateProcess(index, "burstTime", e.target.value)}
+                    onChange={(e) =>
+                      updateProcess(index, "burstTime", e.target.value)
+                    }
                   />
                 ) : (
                   <p>{process.burstTime}</p>
                 )}
               </TableCell>
+              <TableCell>
+                {isEditing &&
+                (selectedAlgorithm.name ===
+                  "Priority Scheduling (Non-Preemptive)" ||
+                  selectedAlgorithm.name ===
+                    "Priority Scheduling (Preemptive)") ? (
+                  <Input
+                    type="number"
+                    defaultValue={process.priority}
+                    onChange={(e) =>
+                      updateProcess(index, "priority", e.target.value)
+                    }
+                  />
+                ) : selectedAlgorithm.name ===
+                    "Priority Scheduling (Non-Preemptive)" ||
+                  selectedAlgorithm.name ===
+                    "Priority Scheduling (Preemptive)" ? (
+                  <p>{process.priority}</p>
+                ) : null}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div>
-        <Button onClick={calculate}>Calculate {selectedAlgorithm.name}</Button>
-      </div>
+      <Button onClick={calculate}>Calculate {selectedAlgorithm.name}</Button>
     </div>
   );
 };
