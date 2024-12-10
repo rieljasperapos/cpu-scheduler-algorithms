@@ -26,9 +26,10 @@ const SelectAlgorithm = () => {
 
   return (
     <div className="flex gap-8 items-center justify-between">
+      <div className="flex items-center gap-4">
       <Sheet>
         <SheetTrigger asChild>
-          <Button>Menu</Button>
+          <Menu className="hover:text-blue-300 cursor-pointer" />
         </SheetTrigger>
         <SheetContent side="left">
           <SheetHeader className="mb-4">
@@ -69,6 +70,10 @@ const SelectAlgorithm = () => {
           </div>
         </SheetContent>
       </Sheet>
+      <Link href="/">
+        <h1 className="text-lg font-medium hover:text-blue-300">Operating Systems</h1>
+      </Link>
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
