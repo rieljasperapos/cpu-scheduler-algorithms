@@ -1,10 +1,10 @@
 "use client";
 
 import SparklesText from "@/components/sparkles-text";
-import PulsatingButton from "@/components/pulsating-button";
 import { MonitorCog } from "lucide-react";
 import Meteors from "@/components/meteors";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -19,37 +19,19 @@ export default function Home() {
       </div>
       <div className="flex gap-4">
         <Link href="/cpu-scheduling">
-          <PulsatingButton
-            text="CPU Scheduling"
-            pulseColor="30, 144, 255" 
-            backgroundColor="#1C1C1E" 
-            textColor="#D9D9D9" 
-            animationDuration="1.5s"
-            buttonWidth="200px"
-            buttonHeight="50px"
-          />
+          <Button className="bg-[#1C1C1E] text-[#D9D9D9] hover:bg-[#4682B4]" size="lg">
+            CPU Scheduling
+          </Button>
         </Link>
         <Link href="/page-replacement-algorithms">
-          <PulsatingButton
-            text="Page Replacement"
-            pulseColor="105, 105, 105" 
-            backgroundColor="#2F4F4F" 
-            textColor="#D9D9D9" 
-            animationDuration="1.5s"
-            buttonWidth="200px"
-            buttonHeight="50px"
-          />
+          <Button className="bg-[#2F4F4F] text-[#D9D9D9] hover:bg-[#4682B4]" size="lg">
+            Page Replacement
+          </Button>
         </Link>
         <Link href="/disk-scheduling">
-          <PulsatingButton
-            text="Disk Scheduling"
-            pulseColor="34, 139, 34" 
-            backgroundColor="#2E2E2E" 
-            textColor="#D9D9D9" 
-            animationDuration="1.5s"
-            buttonWidth="200px"
-            buttonHeight="50px"
-          />
+          <Button className="bg-[#2E2E2E] text-[#D9D9D9] hover:bg-[#4682B4]"size="lg">
+            Disk Scheduling
+          </Button>
         </Link>
       </div>
     </div>
