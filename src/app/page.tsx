@@ -13,7 +13,7 @@ export default function Home() {
       <div className="flex items-center gap-5">
         <MonitorCog className="h-36 w-36 text-steel-blue" />
         <SparklesText
-          text="OS Scheduler Algorithms"
+          text="OS Scheduling Algorithms"
           colors={{ first: "#1C1C1E", second: "#4682B4" }}
         />
       </div>
